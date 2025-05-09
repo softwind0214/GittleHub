@@ -61,11 +61,18 @@ extension Search {
                             } else if let result = self.vm.result,
                                       result.items.count > 0 {
                                 ForEach(result.items, id: \.id) { item in
-                                    Item(data: item)
-                                        .frame(maxWidth:.infinity, alignment:.leading)
-                                        .background(Color(.systemBackground))
-                                        .padding(.horizontal)
-                                        .accessibilityLabel("ui-test-\(item.id)")
+                                    NavigationLink {
+                                        Webview()
+                                            .load(url: item.html_url)
+                                    } label: {
+                                        Item(data: item)
+                                            .frame(maxWidth:.infinity, alignment:.leading)
+                                            .background(Color(.systemBackground))
+                                            .padding(.horizontal)
+                                            .accessibilityLabel("ui-test-\(item.id)")
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+
                                 }
                             } else {
                                 Spacer() // 顶部占位
