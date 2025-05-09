@@ -20,8 +20,6 @@ class LoginVM: ObservableObject {
     var cs = "e0b28cd2630c17580cc560a7191db1de6004b301e1610e0d659a2238b76d5fc9c90afdbef0056e1e00990c063ed71c4e"
     @Security.Encrypted
     var ci = "09a3567b1c1a5cbb9cb29045648dd6b32b729ea61156e6e18ae289f83a744b3b"
-    
-    var isNewLogin: Bool = false
 
     @Published
     var needsBiometry: Bool = false
@@ -33,6 +31,9 @@ class LoginVM: ObservableObject {
     func performUserAutoLogin() async {
         guard let code = code else {
             return
+        }
+        await MainActor.run {
+            self.needsBiometry = false
         }
         do {
             let model = try await BearerToken.post(params: [
@@ -61,23 +62,11 @@ class LoginVM: ObservableObject {
                let code = uc.queryItems?.first(where: { $0.name == "code" })?.value {
                 self.code = code
                 // wait for faceid
-                if self.isNewLogin {
-                    Task {
-                        await self.performUserAutoLogin()
-                    }
-                } else {
-                    Task {
-                        await MainActor.run {
-                            self.needsBiometry = false
-                            self.needsBiometry = true
-                        }
-                    }
-                }
-                self.isNewLogin = false
+                self.needsBiometry = true
                 return .cancel
             } else if uc.path == "/login",
                       uc.host == "github.com" {
-                self.isNewLogin = true
+//                self.isNewLogin = true
                 return .allow
             } else {
                 return .allow

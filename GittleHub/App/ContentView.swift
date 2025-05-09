@@ -97,29 +97,45 @@ struct ContentView: View {
             .onReceive(self.faceAuth.$isAuthenticated) { value in
                 if value == true {
                     Task {
-                        self.loginVM.needsBiometry = false
                         await self.loginVM.performUserAutoLogin()
                     }
                 }
             }
 
             if let message = self.context.errorMessage {
-                VStack {
+                VStack(alignment: .leading, spacing: 40) {
                     Text("page.error.title")
+                        .font(.title)
+                        .foregroundColor(Color.black)
+                        .bold()
+                        .padding(.top, 20)
                     Text(message)
-                    Button("page.error.retry") {
-                        self.context.errorMessage = nil
+                        .font(.title3)
+                        .foregroundColor(Color.black)
+                    Color.clear
+                        .frame(maxWidth: .infinity)
+                    HStack {
+                        Spacer()
+                        Button("page.error.retry") {
+                            self.context.errorMessage = nil
+                        }
+                        .font(.title)
+                        .padding(.init(top: 20, leading: 40, bottom: 20, trailing: 40))
+                        .background(Color.accentColor)
+                        .foregroundColor(Color.white)
+                        .opacity(0.8)
+                        .shadow(color: .black, radius: 10, x: 3, y: 3)
+                        .frame(alignment: .center)
+                        Spacer()
                     }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .font(.title2)
-                    .background(Color.accentColor)
-                    .foregroundColor(Color.white)
-                    .opacity(0.8)
-                    .shadow(color: .black, radius: 10, x: 3, y: 3)
+
+                    Spacer()
                 }
+                .padding(20)
+                .background(Color.white)                
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
