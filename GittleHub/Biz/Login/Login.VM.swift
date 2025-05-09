@@ -62,7 +62,10 @@ class LoginVM: ObservableObject {
                let code = uc.queryItems?.first(where: { $0.name == "code" })?.value {
                 self.code = code
                 // wait for faceid
-                self.needsBiometry = true
+//                self.needsBiometry = true
+                Task {
+                    await self.performUserAutoLogin()
+                }
                 return .cancel
             } else if uc.path == "/login",
                       uc.host == "github.com" {

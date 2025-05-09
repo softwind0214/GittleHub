@@ -13,6 +13,7 @@ struct Webview: UIViewRepresentable {
     
     typealias UIViewType = WKWebView
     typealias InterceptBeforeLoad = (WKWebView, WKNavigationAction) -> WKNavigationActionPolicy
+    typealias InterceptWhenFail = (WKWebView, WKNavigation, Error) -> Void
 
     let content: UIViewType
     let configuration: Configuration = .init()
@@ -44,6 +45,11 @@ struct Webview: UIViewRepresentable {
         )
         return self
     }
+    
+    func interceptWhenFail(action: @escaping InterceptWhenFail) -> Self {
+        self.configuration.addInterceptor(action, for: .whenFail)
+        return self
+    }
 
     func makeCoordinator() -> Coordinator {
         .init(parent: self)
@@ -59,6 +65,7 @@ struct Webview: UIViewRepresentable {
         
         enum LifeCycle: Hashable, Equatable, Codable {
             case beforLoad
+            case whenFail
         }
     }
     
@@ -85,6 +92,14 @@ struct Webview: UIViewRepresentable {
                     } else {
                         return new
                     }
+                }
+        }
+
+        func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: any Error) {
+            (self.parent.configuration.interceptors[.whenFail] ?? [])
+                .compactMap { $0 as? InterceptWhenFail }
+                .forEach { action in
+                    action(webView, navigation, error)
                 }
         }
     }

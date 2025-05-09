@@ -23,6 +23,8 @@ struct ContentView: View {
     @EnvironmentObject
     var context: AppContext
     
+    var listener = NetworkReachabilityManager()
+    
     var body: some View {
         ZStack {
             TabView {
@@ -63,6 +65,18 @@ struct ContentView: View {
                     Webview()
                         .interceptBeforeLoad { webview, action in
                             self.loginVM.onUserLogin(view: webview, action: action)
+                        }
+                        .interceptWhenFail { webview, nav, error in
+                            self.context.showLoginPage = false
+                            self.listener?.startListening { status in
+                                switch status {
+                                case .notReachable, .unknown:
+                                    break
+                                default:
+                                    self.context.showLoginPage = true
+                                    self.listener?.stopListening()
+                                }
+                            }
                         }
                         .load(url: self.loginVM.requestURL)
                     VStack {
