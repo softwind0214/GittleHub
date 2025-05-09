@@ -159,3 +159,4 @@ Both function unit test and UI test are supported, and run correctly.
 
 * If you are adding a new biz feature, it's strongly recommended to create a new folder in `Biz` folder, and create your own views, vms, models.
 * If you are modifying base SDKs, it's strongly recommended to create test cases and ensure all of them run correctly.
+* You'd better have your commits signed. That's more trustable.
