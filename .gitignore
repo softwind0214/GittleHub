@@ -1,0 +1,77 @@
+# Xcode
+# 项目文件
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata
+!*.xcodeproj/xcuserdata
+
+# 工作区文件
+*.xcworkspace/*
+!*.xcworkspace/contents.xcworkspacedata
+!*.xcworkspace/xcshareddata
+!*.xcworkspace/xcuserdata
+
+# 派生数据
+DerivedData/
+
+# 模拟器文件
+iOS DeviceSupport/
+
+# 归档文件
+*.xcarchive/
+
+# 日志和索引文件
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/Checkouts
+Carthage/Build
+
+# 本地配置文件
+*.swiftlint.yml
+*.env
+
+# 日志文件
+*.log
+
+# 构建产物
+build/
+
+# 测试报告
+*.xcresult
+
+# 临时文件
+.DS_Store
+*.swp
+*.swo
+*.tmp
+
+# 应用程序文件
+*.app
+*.appex
+*.framework
+*.dylib
+*.bundle
+
+# 证书文件
+*.p12
+*.cer
+*.der
+*.pem
+
+# 第三方工具生成的文件
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# 忽略 Xcode 自动生成的代码覆盖文件
+*.xccovarchive
+*.xccovreport
+
