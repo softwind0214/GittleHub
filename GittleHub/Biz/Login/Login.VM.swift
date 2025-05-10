@@ -26,7 +26,9 @@ class LoginVM: ObservableObject {
     
     var code: String?
     
-    lazy var requestURL = { "https://\(GeneralGHRequest.GHHost)/login/oauth/authorize?client_id=\(self.ci)" } ()
+    lazy var state = { UUID().uuidString  }()
+    
+    lazy var requestURL = { "https://\(GeneralGHRequest.GHHost)/login/oauth/authorize?client_id=\(self.ci)&state=\(self.state)" } ()
 
     func performUserAutoLogin() async {
         guard let code = code else {
@@ -39,7 +41,9 @@ class LoginVM: ObservableObject {
             let model = try await BearerToken.post(params: [
                 "client_id": self.ci,
                 "client_secret": self.cs,
-                "code": code
+                "code": code,
+                "redirect_uri": "http://127.0.0.1/github/callback",
+                "state": self.state
             ])
             A.token = model
             let user = try await User.get()

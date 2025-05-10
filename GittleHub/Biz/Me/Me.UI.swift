@@ -37,7 +37,7 @@ extension Me {
                             }
                             .frame(maxWidth: .infinity)
                             VStack(alignment: .leading) {
-                                Text(user.name)
+                                Text(user.name ?? user.login)
                                     .font(.title3)
                                     .bold()
                                 Text("@" + user.login)
@@ -66,13 +66,13 @@ extension Me {
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 16, height: 16)
-                                
-                            Text(user.email)
+
+                            Text(user.email ?? "")
                                 .font(.title3)
                                 .bold()
                         }
 
-                        Text(user.bio)
+                        Text(user.bio ?? "")
                             .font(.title3)
                             .italic()
 

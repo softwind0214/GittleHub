@@ -41,13 +41,13 @@ struct User: Codable, RemoteModel {
     let type: String
     let user_view_type: String?
     let site_admin: Bool
-    let name: String
+    let name: String?
     let company: String?
     let blog: String
     let location: String?
-    let email: String
+    let email: String?
     let hireable: String?
-    let bio: String
+    let bio: String?
     let twitter_username: String?
     let notification_email: String?
     let public_repos: Int
