@@ -52,6 +52,10 @@ class LoginVM: ObservableObject {
                 A.showLoginPage = false
             }
         } catch {
+            if let error = error as? GeneralGHRequest.Error,
+               case .server = error {
+                await Webview.clearCookies()
+            }
             await MainActor.run {
                 A.showLoginPage = false
                 A.errorMessage = "\(error)"

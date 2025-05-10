@@ -118,12 +118,7 @@ extension Me {
                                 primaryButton: .default(Text("me.logout.alert.confirm")) {
                                     A.token = nil
                                     A.user = nil
-                                    let store = WKWebsiteDataStore.default().httpCookieStore
-                                    store.getAllCookies { cookies in
-                                        for aCookie in cookies where aCookie.domain == "github.com" {
-                                            store.delete(aCookie)
-                                        }
-                                    }
+                                    Webview.clearCookies()
                                 },
                                 secondaryButton: .cancel(Text("me.logout.alert.cancel"))
                             )

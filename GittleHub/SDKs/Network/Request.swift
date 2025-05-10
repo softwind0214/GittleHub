@@ -181,9 +181,23 @@ class GeneralGHRequest: GHRequest {
     }
 
     enum Error: LocalizedError {
+
         case invalidURL
+        case server(ServerErrorInfo)
+
         var errorDescription: String? {
-            "GeneralGHRequest.Error.invalidURL"
+            switch self {
+            case .invalidURL:
+                return "GeneralGHRequest.Error.invalidURL"
+            case .server(let info):
+                return "[code]: \(info.bad_verification_code)\n[detail]: \(info.error_description)"
+            }
+        }
+        
+        struct ServerErrorInfo: Codable {
+            let bad_verification_code: String
+            let error_description: String
+            let error_uri: String
         }
     }
 }
@@ -194,91 +208,6 @@ extension GeneralGHRequest {
     static let GHHost = "github.com"
     static let GHAPIHost = "api.github.com"
 
-}
-
-protocol RemoteModel {
-
-    static var host: String { get }
-    static var path: String { get }
-
-    static func buildRequest(method: HTTPMethod, body: GHRequestBodyType, params: [String: String], queries: [String: String]) -> GHRequest
-}
-
-extension RemoteModel {
-    
-    static var host: String {
-        GeneralGHRequest.GHAPIHost
-    }
-
-    static func buildRequest(method: HTTPMethod, body: GHRequestBodyType, params: [String: String], queries: [String: String]) -> GHRequest {
-        let request = GeneralGHRequest
-            .anInstance()
-            .method(method)
-            .body(body)
-            .host(self.host)
-            .path(self.path)
-        params.forEach { item in
-            _ = request.bodyAppend(key: item.key, value: item.value)
-        }
-        queries.forEach { item in
-            _ = request.query(key: item.key, value: item.value)
-        }
-        return request
-    }
-
-}
-
-extension RemoteModel where Self: Decodable {
-    
-    static func request(method: HTTPMethod, body: GHRequestBodyType, params: [String: String] = [:], queries: [String: String] = [:]) async throws -> Self {
-        let request = self.buildRequest(method: method, body: body, params: params, queries: queries)
-        return try await withCheckedThrowingContinuation { continuation in
-            do {
-                try request
-                    .build()
-                    .responseDecodable(of: Self.self) { response in
-                        L.info(module: .network, response.debugDescription)
-                        continuation.resume(with: response.result)
-                    }
-                    .resume()
-            } catch {
-                continuation.resume(throwing: error)
-            }
-        }
-    }
-    
-    static func requestList(method: HTTPMethod, body: GHRequestBodyType, params: [String: String] = [:], queries: [String: String] = [:]) async throws -> [Self] {
-        let request = self.buildRequest(method: method, body: body, params: params, queries: queries)
-        return try await withCheckedThrowingContinuation { continuation in
-            do {
-                try request
-                    .build()
-                    .responseDecodable(of: [Self].self) { response in
-                        L.info(module: .network, response.debugDescription)
-                        continuation.resume(with: response.result)
-                    }
-                    .resume()
-            } catch {
-                continuation.resume(throwing: error)
-            }
-        }
-    }
-
-    static func get(params: [String: String] = [:], queries: [String: String] = [:]) async throws -> Self {
-        try await self.request(method: .get, body: .json, params: params, queries: queries)
-    }
-
-    static func getList(params: [String: String] = [:], queries: [String: String] = [:]) async throws -> [Self] {
-        try await self.requestList(method: .get, body: .json, params: params, queries: queries)
-    }
-
-    static func post(params: [String: String] = [:], queries: [String: String] = [:]) async throws -> Self {
-        try await self.request(method: .post, body: .json, params: params, queries: queries)
-    }
-    
-    static func form(params: [String: String] = [:], queries: [String: String] = [:]) async throws -> Self {
-        try await self.request(method: .post, body: .form, params: params, queries: queries)
-    }
 }
 
 extension LogCenter.Module {

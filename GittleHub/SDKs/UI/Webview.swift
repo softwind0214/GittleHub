@@ -104,3 +104,14 @@ struct Webview: UIViewRepresentable {
         }
     }
 }
+
+extension Webview {
+    static func clearCookies() {
+        let store = WKWebsiteDataStore.default().httpCookieStore
+        store.getAllCookies { cookies in
+            for aCookie in cookies where aCookie.domain == "github.com" {
+                store.delete(aCookie)
+            }
+        }
+    }
+}
