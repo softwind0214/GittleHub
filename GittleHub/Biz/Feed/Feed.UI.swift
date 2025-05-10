@@ -46,7 +46,15 @@ extension Feed {
             let view = ScrollView() {
                 LazyVStack(spacing: 15) {
                     ForEach(self.vm.data.list) { item in
-                        EventCell(data: item)
+                        NavigationLink {
+                            Webview()
+                                .loadURL(from: item.repo.url)
+                        } label: {
+                            EventCell(data: item)
+                                .frame(maxWidth:.infinity, alignment:.leading)
+                                .padding(.horizontal)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
             }.onAppear {
@@ -155,5 +163,28 @@ extension Feed.Model.Event {
         default:
             return "performed an event \(self.type.rawValue) with"
         }
+    }
+}
+
+extension Webview {
+    func loadURL(from api: String) -> Self {
+        do {
+            try GeneralGHRequest()
+                .url(api)
+                .build()
+                .response { response in
+                    if let data = response.data,
+                       let pageInfo = try? JSONDecoder().decode(Feed.Model.Event.Repo.self, from: data),
+                       let url = pageInfo.html_url {
+                        _ = self.load(url: url)
+                    } else {
+                        _ = self.load(url: api)
+                    }
+                }
+                .resume()
+        } catch {
+            return self.load(url: api)
+        }
+        return self
     }
 }

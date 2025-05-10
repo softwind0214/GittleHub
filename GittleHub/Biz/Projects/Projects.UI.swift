@@ -43,7 +43,15 @@ extension Projects {
             let view = ScrollView() {
                 LazyVStack(spacing: 15) {
                     ForEach(self.vm.data.list) { item in
-                        ContentCell(data: item)
+                        NavigationLink {
+                            Webview()
+                                .load(url: item.html_url)
+                        } label: {
+                            ContentCell(data: item)
+                                .frame(maxWidth:.infinity, alignment:.leading)
+                                .padding(.horizontal)
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
             }.onAppear {

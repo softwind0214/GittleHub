@@ -68,6 +68,7 @@ extension Feed.Model {
             let id: Int
             let name: String
             let url: String
+            let html_url: String?
         }
         
         struct Payload: Codable {

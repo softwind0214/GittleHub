@@ -3,7 +3,7 @@
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata
-!*.xcodeproj/xcuserdata
+# !*.xcodeproj/xcuserdata
 
 # 工作区文件
 *.xcworkspace/*
