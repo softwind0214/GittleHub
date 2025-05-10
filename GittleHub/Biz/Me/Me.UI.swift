@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import SDWebImageSwiftUI
+import WebKit
 
 extension Me {
     struct MeView: View {
@@ -117,6 +118,12 @@ extension Me {
                                 primaryButton: .default(Text("me.logout.alert.confirm")) {
                                     A.token = nil
                                     A.user = nil
+                                    let store = WKWebsiteDataStore.default().httpCookieStore
+                                    store.getAllCookies { cookies in
+                                        for aCookie in cookies where aCookie.domain == "github.com" {
+                                            store.delete(aCookie)
+                                        }
+                                    }
                                 },
                                 secondaryButton: .cancel(Text("me.logout.alert.cancel"))
                             )
