@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		64B92E222DCB8B2F00DB9F58 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 64B92E212DCB8B2F00DB9F58 /* Alamofire */; };
 		64B92E272DCB8CDA00DB9F58 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 64B92E262DCB8CDA00DB9F58 /* SDWebImageSwiftUI */; };
-		64B92E2A2DCB8D9600DB9F58 /* SwiftUIX in Frameworks */ = {isa = PBXBuildFile; productRef = 64B92E292DCB8D9600DB9F58 /* SwiftUIX */; };
-		64B92E2D2DCB8E8100DB9F58 /* PopupView in Frameworks */ = {isa = PBXBuildFile; productRef = 64B92E2C2DCB8E8100DB9F58 /* PopupView */; };
 		64B92E332DCB983C00DB9F58 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 64B92E322DCB983C00DB9F58 /* KeychainAccess */; };
 		64B92E3E2DCBDADA00DB9F58 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 64B92E3D2DCBDADA00DB9F58 /* CryptoSwift */; };
 		64B92E442DCBFFB800DB9F58 /* FMDB in Frameworks */ = {isa = PBXBuildFile; productRef = 64B92E432DCBFFB800DB9F58 /* FMDB */; };
@@ -63,8 +61,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64B92E2D2DCB8E8100DB9F58 /* PopupView in Frameworks */,
-				64B92E2A2DCB8D9600DB9F58 /* SwiftUIX in Frameworks */,
 				64B92E272DCB8CDA00DB9F58 /* SDWebImageSwiftUI in Frameworks */,
 				64B92E222DCB8B2F00DB9F58 /* Alamofire in Frameworks */,
 				64B92E442DCBFFB800DB9F58 /* FMDB in Frameworks */,
@@ -133,8 +129,6 @@
 			packageProductDependencies = (
 				64B92E212DCB8B2F00DB9F58 /* Alamofire */,
 				64B92E262DCB8CDA00DB9F58 /* SDWebImageSwiftUI */,
-				64B92E292DCB8D9600DB9F58 /* SwiftUIX */,
-				64B92E2C2DCB8E8100DB9F58 /* PopupView */,
 				64B92E322DCB983C00DB9F58 /* KeychainAccess */,
 				64B92E3D2DCBDADA00DB9F58 /* CryptoSwift */,
 				64B92E432DCBFFB800DB9F58 /* FMDB */,
@@ -226,8 +220,6 @@
 			packageReferences = (
 				64B92E202DCB8B2F00DB9F58 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				64B92E252DCB8CDA00DB9F58 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
-				64B92E282DCB8D9600DB9F58 /* XCRemoteSwiftPackageReference "SwiftUIX" */,
-				64B92E2B2DCB8E8100DB9F58 /* XCRemoteSwiftPackageReference "PopupView" */,
 				64B92E312DCB983C00DB9F58 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				64B92E3C2DCBDADA00DB9F58 /* XCRemoteSwiftPackageReference "CryptoSwift" */,
 				64B92E422DCBFFB800DB9F58 /* XCRemoteSwiftPackageReference "fmdb" */,
@@ -632,22 +624,6 @@
 				minimumVersion = 3.1.3;
 			};
 		};
-		64B92E282DCB8D9600DB9F58 /* XCRemoteSwiftPackageReference "SwiftUIX" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SwiftUIX/SwiftUIX.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.3;
-			};
-		};
-		64B92E2B2DCB8E8100DB9F58 /* XCRemoteSwiftPackageReference "PopupView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/exyte/PopupView.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.1.7;
-			};
-		};
 		64B92E312DCB983C00DB9F58 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
@@ -692,16 +668,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 64B92E252DCB8CDA00DB9F58 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
-		};
-		64B92E292DCB8D9600DB9F58 /* SwiftUIX */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 64B92E282DCB8D9600DB9F58 /* XCRemoteSwiftPackageReference "SwiftUIX" */;
-			productName = SwiftUIX;
-		};
-		64B92E2C2DCB8E8100DB9F58 /* PopupView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 64B92E2B2DCB8E8100DB9F58 /* XCRemoteSwiftPackageReference "PopupView" */;
-			productName = PopupView;
 		};
 		64B92E322DCB983C00DB9F58 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -14,10 +14,27 @@ extension Feed {
         @Published
         var data: Model = .init(list: [])
         
-        func fetch() async throws {
-            let list = try await Model.Event.getList()
+        var pages: Set<Int> = .init()
+
+        func fetch(index: Int) async throws {
+            if index == 1 {
+                pages.removeAll()
+                pages.insert(1)
+            } else if pages.contains(index) {
+                return
+            }
+            let list = try await Model.Event.getList(queries: [
+                "page": "\(index)"
+            ])
             await MainActor.run {
-                self.data = .init(list: list)
+                let newData: Model
+                if index == 1 {
+                    newData = .init(list: list)
+                } else {
+                    pages.insert(index)
+                    newData = .init(list: self.data.list + list)
+                }
+                self.data = newData
             }
         }
     }

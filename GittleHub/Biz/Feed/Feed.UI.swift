@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import SDWebImageSwiftUI
+import Combine
 
 extension Feed {
 
@@ -38,45 +39,39 @@ extension Feed {
 
         @StateObject
         var vm: VM = .init()
-        
+
         @State
         private var refresh: Bool = false
+        
+        let firstLaunch: PassthroughSubject<Bool, Never> = .init()
 
         var body: some View {
-            let view = ScrollView() {
-                LazyVStack(spacing: 15) {
-                    ForEach(self.vm.data.list) { item in
-                        NavigationLink {
-                            Webview()
-                                .loadURL(from: item.repo.url)
-                        } label: {
-                            EventCell(data: item)
-                                .frame(maxWidth:.infinity, alignment:.leading)
-                                .padding(.horizontal)
-                        }
-                        .buttonStyle(PlainButtonStyle())
+            LazyVStack(spacing: 15) {
+                ForEach(self.vm.data.list) { item in
+                    NavigationLink {
+                        Webview()
+                            .loadURL(from: item.repo.url)
+                    } label: {
+                        EventCell(data: item)
+                            .padding(.horizontal)
                     }
+                    .buttonStyle(PlainButtonStyle())
                 }
-            }.onAppear {
+            }
+            .refreshable(firstLaunch: self.firstLaunch.eraseToAnyPublisher()) { index in
+                try? await self.vm.fetch(index: index)
+            }
+            .onAppear {
                 if A.user == nil {
                     self.vm.data = .init(list: [])
                     self.refresh.toggle()
                 }
-            }.onReceive(A.$user) { _ in
+            }
+            .onReceive(A.$user) { _ in
                 if A.user != nil,
                    self.vm.data.list.count == 0 {
-                    Task {
-                        try? await self.vm.fetch()
-                        self.refresh.toggle()
-                    }
+                    self.firstLaunch.send(true)
                 }
-            }
-            if #available(iOS 15.0, *) {
-                return view.refreshable {
-                    try? await self.vm.fetch()
-                }
-            } else {
-                return view
             }
         }
         
